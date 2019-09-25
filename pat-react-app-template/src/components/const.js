@@ -3,6 +3,6 @@ export const CssClassNames = {
   listContainer : 'd-flex flex-wrap',
   tileContainer: 'card m-2',
   tileImage: 'card-img-top',
-  tileBody: 'ard-body',
+  tileBody: 'card-body',
   tileTitle: 'card-title'
 }
