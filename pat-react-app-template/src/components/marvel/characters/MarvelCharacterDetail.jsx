@@ -13,15 +13,8 @@ class MarvelCharacterDetail extends React.Component {
   }
 
   componentDidMount() {
-      const id = this.props.match.params.id
-      this.props.actions.setFetching(true)
-      this.marvelService.getCharacter(id).then((response) => {
-        this.props.actions.setCharacter(response)
-      }).catch(error => {
-        console.error('MarvelCharacterDetail error: ' + error)
-      }).finally(() => {
-        this.props.actions.setFetching(false)
-      })
+    const id = this.props.match.params.id
+    this.props.actions.fetchCharacter(id)
 
   }
 

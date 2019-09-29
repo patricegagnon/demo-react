@@ -25,14 +25,7 @@ class MarvelCharacters extends React.Component {
   }
 
   fetchPageData(offset, limit) {
-    this.props.actions.setFetching(true)
-    this.marvelService.getCharacters(offset, limit).then((response) => {
-      this.props.actions.setCharacters(response.results, response.offset, response.limit, response.total)
-    }).catch(error => {
-      console.error('MarvelCharacters error: ' + error)
-    }).finally(() => {
-      this.props.actions.setFetching(false)
-    })
+    this.props.actions.fetchPageDataWithThunk(offset, limit)
   }
 
   renderCharacterTile(character) {
