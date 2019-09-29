@@ -3,17 +3,15 @@ import MarvelService, {MarvelImageFormats, getImageUrl} from '../../../services/
 import {Link} from "react-router-dom"
 import Pagination from '../../common/Pagination'
 
-import {CssClassNames} from '../../const'
+import {Selectors} from "../../../store/characters/selectors";
+import {bindActionCreators} from "redux";
+import {ActionCreators} from "../../../store/characters/actions";
+import {connect} from "react-redux";
+import {CssClassNames} from "../../const";
+
 class MarvelCharacters extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      characters: [],
-      offset: 0,
-      limit: 20,
-      total: 0,
-      isFetching: false
-    }
     this.marvelService = new MarvelService()
     this.renderCharacterTile = this.renderCharacterTile.bind(this)
     this.fetchPageData = this.fetchPageData.bind(this)
@@ -23,28 +21,24 @@ class MarvelCharacters extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchPageData(this.state.offset, this.state.limit)
+    this.fetchPageData(this.props.offset, this.props.limit)
   }
 
   fetchPageData(offset, limit) {
-    this.setState({isFetching: true})
+    this.props.actions.setFetching(true)
     this.marvelService.getCharacters(offset, limit).then((response) => {
-      this.setState({
-        characters: response.results,
-        offset: response.offset,
-        limit: response.limit,
-        total: response.total
-      })
+      this.props.actions.setCharacters(response.results, response.offset, response.limit, response.total)
     }).catch(error => {
       console.error('MarvelCharacters error: ' + error)
     }).finally(() => {
-      this.setState({isFetching: false})
+      this.props.actions.setFetching(false)
     })
   }
 
   renderCharacterTile(character) {
     return <div key={`character${character.name}`} className={CssClassNames.tileContainer} style={{width: '300px'}}>
-      <img src={getImageUrl(character.thumbnail, MarvelImageFormats.landscape_large)} className={CssClassNames.tileImage} />
+      <img src={getImageUrl(character.thumbnail, MarvelImageFormats.landscape_large)}
+           className={CssClassNames.tileImage}/>
       <div className={CssClassNames.tileBody}>
         <h5 className={CssClassNames.tileTitle}>{this.props.showDetailLink ?
           <Link to={`/characters/${character.id}`}>{character.name}</Link> : character.name}</h5>
@@ -54,27 +48,27 @@ class MarvelCharacters extends React.Component {
 
   handlePrevious(event) {
     event.preventDefault()
-    this.fetchPageData(this.state.offset - this.state.limit, this.state.limit)
+    this.fetchPageData(this.props.offset - this.props.limit, this.props.limit)
   }
 
   handleNext(event) {
     event.preventDefault()
-    this.fetchPageData(this.state.offset + this.state.limit, this.state.limit)
+    this.fetchPageData(this.props.offset + this.props.limit, this.props.limit)
   }
 
   handleChangePage(pageNumber) {
-    this.fetchPageData((pageNumber - 1) * this.state.limit, this.state.limit)
+    this.fetchPageData((pageNumber - 1) * this.props.limit, this.props.limit)
   }
 
   renderPagination() {
     return <Pagination
-      offset={this.state.offset}
-      limit={this.state.limit}
-      total={this.state.total}
+      offset={this.props.offset}
+      limit={this.props.limit}
+      total={this.props.total}
       handlePrevious={this.handlePrevious}
       handleNext={this.handleNext}
       handleChangePage={this.handleChangePage}
-      isFetching={this.state.isFetching}
+      isFetching={this.props.isFetching}
     />
   }
 
@@ -83,7 +77,7 @@ class MarvelCharacters extends React.Component {
       <h1>Liste des personnages de Marvel</h1>
       {this.renderPagination()}
       <div className={CssClassNames.listContainer}>
-        {this.state.characters.map(character => {
+        {this.props.characters.map(character => {
           return this.renderCharacterTile(character)
         })}
       </div>
@@ -92,4 +86,22 @@ class MarvelCharacters extends React.Component {
   }
 }
 
-export default MarvelCharacters
+const mapStateToProps = state => {
+  return {
+    characters: Selectors.getCharacters(state),
+    offset: Selectors.getOffset(state),
+    limit: Selectors.getLimit(state),
+    total: Selectors.getTotal(state),
+    isFetching: Selectors.isFetching(state)
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(ActionCreators, dispatch)
+  }
+}
+
+const MarvelCharactersConnected = connect(mapStateToProps, mapDispatchToProps)(MarvelCharacters)
+
+export default MarvelCharactersConnected
