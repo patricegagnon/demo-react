@@ -8,7 +8,6 @@ export const Actions = {
   FETCH_CHARACTER: 'FETCH_CHARACTER'
 }
 
-const marvelService = new MarvelService()
 
 export const ActionCreators = {
   setFetching: (isFetching) => ({type:Actions.SET_FETCHING, isFetching}),

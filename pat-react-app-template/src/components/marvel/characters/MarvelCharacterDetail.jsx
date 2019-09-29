@@ -1,27 +1,32 @@
 import React from 'react'
 import MarvelService, {MarvelImageFormats, getImageUrl} from '../../../services/MarvelProxyService'
+import {Selectors} from "../../../store/characters/selectors";
+import {bindActionCreators} from "redux";
+import {ActionCreators} from "../../../store/characters/actions";
+import {connect} from "react-redux";
 
 class MarvelCharacterDetail extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {character: null}
     this.marvelService = new MarvelService()
+    this.state = {character: null}
   }
 
   componentDidMount() {
-    const id = this.props.match.params.id
-    this.setState({isFetching: true})
-    this.marvelService.getCharacter(id).then((response) => {
-      this.setState({character: response})
-    }).catch(error => {
-      console.error('MarvelCharacterDetail error: ' + error)
-    }).finally(() => {
-      this.setState({isFetching: false})
-    })
+      const id = this.props.match.params.id
+      this.props.actions.setFetching(true)
+      this.marvelService.getCharacter(id).then((response) => {
+        this.props.actions.setCharacter(response)
+      }).catch(error => {
+        console.error('MarvelCharacterDetail error: ' + error)
+      }).finally(() => {
+        this.props.actions.setFetching(false)
+      })
+
   }
 
   render() {
-    const {character} = this.state
+    const {character} = this.props
     if (!character) {
       return <div></div>
     }
@@ -34,5 +39,20 @@ class MarvelCharacterDetail extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    character: Selectors.getCharacter(state),
+    isFetching: Selectors.isFetching(state)
+  }
+}
 
-export default MarvelCharacterDetail
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(ActionCreators, dispatch)
+  }
+}
+
+const MarvelCharacterDetailConnected = connect(mapStateToProps, mapDispatchToProps)(MarvelCharacterDetail)
+
+
+export default MarvelCharacterDetailConnected
