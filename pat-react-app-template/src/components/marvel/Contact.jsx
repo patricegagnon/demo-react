@@ -26,7 +26,7 @@ const Contacts = ({match}) => {
     </ul>
     <Switch>
       <Route path={`${match.url}/address`} component={Address}/>
-      <Route path={`${match.url}/form`} component={ContactForm}/>
+      <Route path={`${match.url}/form`} component={ContactFormReduxConnected}/>
     </Switch>
   </div>
 }
@@ -114,4 +114,4 @@ const ContactFormReduxConnected = connect(mapStateToProps, null)(ContactFormRedu
 
 
 
-export default ContactFormReduxConnected
+export default Contacts
