@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
     }) : (f) => f
 }
 
-export default (initialState = {}) => {
+export default () => {
   const store = createStore(charactersReducer, characterInitialState, compose(
     applyMiddleware(thunk),
     applyMiddleware(sagaMiddleware),
