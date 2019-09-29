@@ -1,6 +1,7 @@
 import React from 'react'
 import {CssClassNames} from './const'
 import StyledButton from "./common/StyledButton";
+import PropTypes from 'prop-types';
 
 class Hello extends React.PureComponent {
   constructor (props) {
@@ -25,6 +26,10 @@ class Hello extends React.PureComponent {
 
 const Titre = ({titre}) => {
   return <h1 className={CssClassNames.titre}>{titre}</h1>
+}
+
+Titre.propTypes = {
+  titre: PropTypes.string.isRequired
 }
 
 const Description = ({children}) => {

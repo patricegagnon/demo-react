@@ -1,6 +1,8 @@
 import React from "react";
 import {floor} from "lodash";
 
+import PropTypes from 'prop-types';
+
 class Pagination extends React.Component {
   constructor(props) {
     super(props)
@@ -60,6 +62,16 @@ class Pagination extends React.Component {
       <div className="p-2">Page {currentPage} de {totalPages}</div>
     </nav>
   }
+}
+
+Pagination.propTypes = {
+  offset: PropTypes.number.isRequired,
+  limit: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
+  handlePrevious: PropTypes.func.isRequired,
+  handleNex: PropTypes.func.isRequired,
+  handleChangePage: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool
 }
 
 export default Pagination
