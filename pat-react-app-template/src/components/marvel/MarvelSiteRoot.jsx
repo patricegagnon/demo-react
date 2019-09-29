@@ -2,6 +2,7 @@ import React from 'react';
 
 import {NavLink, Route, Switch} from 'react-router-dom';
 import MarvelCharacters from "../marvel/characters/MarvelCharactersPaginated";
+import MarvelCharacterDetail from '../marvel/characters/MarvelCharacterDetail'
 import Contact from '../marvel/Contact'
 
 import { withRouter } from 'react-router-dom'
@@ -59,6 +60,7 @@ class MarvelSiteRoot extends React.PureComponent {
           <Route exact path="/" component={Home}/>
           <Route path="/about" component={About}/>
           <Route exact path="/characters" render={(props) => <MarvelCharacters {...props} showDetailLink />}/>
+          <Route exact path="/characters/:id" component={MarvelCharacterDetail}/>
           <Route path="/contact" component={Contact}/>
         </Switch>
       </div>
