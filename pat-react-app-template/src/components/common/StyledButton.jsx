@@ -21,7 +21,7 @@ class StyledButton extends React.Component {
   render () {
     console.log('StyledButtonFn render')
     const className = `${this.props.icon} mr-3`
-    return <button className=" btn btn-primary p-3 mb-1"  onClick={this.props.actionOnClick}>
+    return <button className=" btn btn-primary p-3 mb-1"  onClick={this.props.actionOnClick} disabled={this.props.disabled}>
       {this.props.icon && <i className={className}></i>}
       {this.props.buttonText}
     </button>
@@ -30,7 +30,8 @@ class StyledButton extends React.Component {
 
 StyledButton.propTypes = {
   buttonText: PropTypes.string,
-  actionOnClick: PropTypes.func
+  actionOnClick: PropTypes.func,
+  disabled: PropTypes.bool
 }
 
 export default StyledButton

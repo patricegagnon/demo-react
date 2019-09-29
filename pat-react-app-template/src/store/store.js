@@ -8,6 +8,7 @@ import {charactersReducer} from './characters/reducers'
 import { combineReducers } from 'redux'
 const sagaMiddleware = createSagaMiddleware()
 let devToolsExtension = f => f
+import { reducer as formReducer } from 'redux-form'
 
 if (process.env.NODE_ENV !== 'production') {
   devToolsExtension = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined'
@@ -25,7 +26,8 @@ export default (initialState = {}) => {
   const reducers = combineReducers(
     {
       comics: comicsReducer,
-      characters: charactersReducer
+      characters: charactersReducer,
+      form: formReducer
     }
   )
   const store = createStore(reducers, initialState, compose(
