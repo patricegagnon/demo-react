@@ -1,4 +1,4 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-console.log('All begins here')
+console.log('All begin here')
