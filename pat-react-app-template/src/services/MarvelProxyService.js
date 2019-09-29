@@ -1,6 +1,7 @@
 import ApiClient from "./api-client";
 
-const baseMarveLUrl = 'http://localhost:8090/marvel'
+const baseMarveLUrl = envConfig.marvelProxyServiceBaseUrl
+
 export const MarvelImageFormats = {
   portrait_small: 'portrait_small',
   portrait_medium: 'portrait_medium',
