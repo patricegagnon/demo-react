@@ -69,7 +69,7 @@ Pagination.propTypes = {
   limit: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
   handlePrevious: PropTypes.func.isRequired,
-  handleNex: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired,
   handleChangePage: PropTypes.func.isRequired,
   isFetching: PropTypes.bool
 }
