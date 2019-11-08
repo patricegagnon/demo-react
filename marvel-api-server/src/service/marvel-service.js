@@ -1,6 +1,7 @@
 import ApiClient from "./api-client";
 import {buildNewRequestMarvelAuthParams} from "./auth-utils"
 import config from '../config'
+import {omit} from 'lodash'
 
 console.log('Config ' + JSON.stringify(config))
 
@@ -32,5 +33,27 @@ export class MarvelService {
   getCharacter(id) {
     return this.apiClient.get('characters', id, null, buildNewRequestMarvelAuthParams(privateKey, publicKey))
   }
+}
+
+export const  cleanCharactersResultData = (payload) => {
+  const newResult = payload.results.map(character => {
+    return omit(character,['series', 'stories', 'events'])
+  })
+  const newPayload = {
+    ...payload,
+    results: newResult
+  }
+  return newPayload
+}
+
+export const  cleanComisResultData = (payload) => {
+  const newResult = payload.results.map(character => {
+    return omit(character,['creators', 'stories', 'events', 'series'])
+  })
+  const newPayload = {
+    ...payload,
+    results: newResult
+  }
+  return newPayload
 }
 

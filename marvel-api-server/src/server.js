@@ -1,5 +1,5 @@
 import express from 'express'
-import {MarvelService} from './service/marvel-service'
+import {cleanCharactersResultData, cleanComisResultData, MarvelService} from './service/marvel-service'
 
 const port = 8090
 const app = express()
@@ -18,8 +18,9 @@ app.get('/marvel/comics', function (req, res) {
     res.json(cache[cacheKey])
   } else {
     marvelSvc.getComics(offset, limit).then(result => {
-      cache[cacheKey] = result.data
-      res.json(result.data)
+      const data = cleanComisResultData(result.data)
+      cache[cacheKey] = data
+      res.json(data)
     }).catch(error => {
       res.status(error.response.status).json(error.response.data)
     })
@@ -52,8 +53,9 @@ app.get('/marvel/characters', function (req, res) {
     res.json(cache[cacheKey])
   } else {
     marvelSvc.getCharacters(offset, limit).then(result => {
-      cache[cacheKey] = result.data
-      res.json(result.data)
+      const data = cleanCharactersResultData(result.data)
+      cache[cacheKey] = data
+      res.json(data)
     }).catch(error => {
       res.status(error.response.status).json(error.response.data)
     })
@@ -76,6 +78,11 @@ app.get('/marvel/characters/:id', function (req, res) {
       res.status(error.response.status).json(error.response.data)
     })
   }
+})
+
+app.get('/marvel/test', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  res.json({status: 'online'})
 })
 
 console.log('listening on port ' + port)

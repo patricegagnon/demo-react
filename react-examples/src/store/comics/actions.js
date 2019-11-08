@@ -30,6 +30,9 @@ export const ActionCreators = {
     marvelService.getComics(offset, limit).then((response) => {
       dispatch(ActionCreators.setComics( response.results, response.offset, response.limit, response.total))
     }).catch(error => {
+      if (error === 'NOT_IN_CACHE') {
+        alert("Vous êtes en mode non connecté et l'information demandée n'est pas disponible")
+      }
       console.error('MarvelComics error: ' + error)
     }).finally(() => {
       dispatch(ActionCreators.setFetching(false))
