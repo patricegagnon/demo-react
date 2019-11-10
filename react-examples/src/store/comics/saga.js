@@ -3,7 +3,7 @@ import {
   Actions,
   ActionCreators
 } from './actions'
-import MarvelService from "../../services/MarvelProxyService";
+import MarvelService, {getInstance} from "../../services/MarvelProxyService";
 function * logActionsSaga(action) {
   if (action && action.type) {
     console.log('Action was diaptched: ' + JSON.stringify(action))
@@ -11,7 +11,7 @@ function * logActionsSaga(action) {
 }
 
 
-const marvelService = new MarvelService()
+const marvelService = getInstance()
 
 function * mainSaga(action) {
   try{
@@ -21,6 +21,9 @@ function * mainSaga(action) {
     yield put(ActionCreators.setComic(response))
   } catch (error) {
     console.log('Error in mailSaga ' + error)
+    if (error === 'NOT_IN_CACHE') {
+      alert("Vous êtes en mode non connecté et l'information demandée n'est pas disponible")
+    }
   } finally {
     yield put(ActionCreators.setFetching(false))
   }

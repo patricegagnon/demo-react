@@ -12,6 +12,7 @@ class MarvelComicDetail extends React.Component {
 
   componentDidMount() {
     const id = this.props.match.params.id
+    this.props.actions.setComic(null)
     this.props.actions.fetchComic(id)
   }
 

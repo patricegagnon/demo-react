@@ -4,9 +4,10 @@ import thunk from 'redux-thunk';
 import comisSagas from './comics/saga'
 import charactersSagas from './characters/saga'
 import {comicsReducer} from './comics/reducers'
+import {appReducer} from './app/reducers'
 import {charactersReducer} from './characters/reducers'
 import { combineReducers } from 'redux'
-
+import {initDisconnectedMode} from './app/disconnectdMode'
 import { reducer as formReducer } from 'redux-form'
 const sagaMiddleware = createSagaMiddleware()
 let devToolsExtension = f => f
@@ -26,6 +27,7 @@ function * rootCombinesSagas () {
 export default (initialState = {}) => {
   const reducers = combineReducers(
     {
+      app: appReducer,
       comics: comicsReducer,
       characters: charactersReducer,
       form: formReducer
@@ -36,6 +38,8 @@ export default (initialState = {}) => {
   applyMiddleware(sagaMiddleware),
     devToolsExtension
   ))
+
+  initDisconnectedMode(store)
 
   store.runSaga = sagaMiddleware.run
   store.runSaga(rootCombinesSagas)

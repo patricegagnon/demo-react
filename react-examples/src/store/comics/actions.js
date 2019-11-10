@@ -1,6 +1,6 @@
-import MarvelService from "../../services/MarvelProxyService";
+import MarvelService, {getInstance} from "../../services/MarvelProxyService";
 import {createActions} from '../baseActions'
-/*
+
 export const Actions = createActions('comics',{
   SET_FETCHING: 'SET_FETCHING',
   SET_COMICS: 'SET_COMICS',
@@ -8,8 +8,8 @@ export const Actions = createActions('comics',{
   SET_COMIC: 'SET_COMIC',
   FETCH_COMIC: 'FETCH_COMIC'
 })
-*/
 
+/*
 export const Actions = {
   SET_FETCHING: 'SET_FETCHING',
   SET_COMICS: 'SET_COMICS',
@@ -17,8 +17,8 @@ export const Actions = {
   SET_COMIC: 'SET_COMIC',
   FETCH_COMIC: 'FETCH_COMIC'
 }
-
-const marvelService = new MarvelService()
+*/
+const marvelService = getInstance()
 
 export const ActionCreators = {
   setFetching: (isFetching) => ({type:Actions.SET_FETCHING, isFetching}),

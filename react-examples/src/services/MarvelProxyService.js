@@ -34,21 +34,28 @@ export class MarvelProxyService {
       baseURL: baseMarveLUrl,
       withCredentials: false
     }
+    this.status = 'online'
+    this.statusListeners = []
     this.apiClient = new ApiClient(apiClientConfig)
     this.getComics = this.getComics.bind(this)
     this.getComic = this.getComic.bind(this)
     this.getCharacters = this.getCharacters.bind(this)
     this.getCharacter = this.getCharacter.bind(this)
-    this.isDisconnected = this.isDisconnected.bind(this)
+    this.isDisconnectedError = this.isDisconnectedError.bind(this)
     this.checkService = this.checkService.bind(this)
     this.startCheckService = this.startCheckService.bind(this)
     this.getComicsCached = this.getComicsCached.bind(this)
-    this.offlineMode = false
+    this.addStatusListener = this.addStatusListener.bind(this)
+    this.notifyStatusListeners = this.notifyStatusListeners.bind(this)
+    this.isOnline = this.isOnline.bind(this)
+    this.setStatus = this.setStatus.bind(this)
+    this.getCharactersCached = this.getCharactersCached.bind(this)
+    this.getComicCached = this.getComicCached.bind(this)
+    this.getCharacterCached = this.getCharacterCached.bind(this)
     this.startCheckService()
   }
-
   getComics(offset = 0, limit = 20) {
-    if (this.offlineMode) {
+    if (!this.isOnline()) {
       return this.getComicsCached(offset, limit)
     }
     return this.apiClient.get('comics', null, null , {offset, limit}).then(result => {
@@ -57,7 +64,7 @@ export class MarvelProxyService {
       }
       return result;
     }).catch(error => {
-      if (this.isDisconnected(error)) {
+      if (this.isDisconnectedError(error)) {
         return this.getComicsCached(offset, limit)
       } else {
         throw error
@@ -74,16 +81,82 @@ export class MarvelProxyService {
     }
   }
   getComic(id) {
-    return this.apiClient.get('comics', id)
+    if (!this.isOnline()) {
+      return this.getComicCached(id)
+    }
+    return this.apiClient.get('comics', id).then(result => {
+      if (result) {
+        localStorageCache.setItem({type:'comics', id}, result)
+      }
+      return result;
+    }).catch(error => {
+      if (this.isDisconnectedError(error)) {
+        return this.getComicCached(id)
+      } else {
+        throw error
+      }
+    })
+  }
+  getComicCached(id) {
+    const cachedValue = localStorageCache.getItem({type:'comics', id})
+    if(cachedValue) {
+      return Promise.resolve(cachedValue)
+    } else {
+      return Promise.reject('NOT_IN_CACHE')
+    }
   }
   getCharacters(offset = 0, limit = 20) {
-    return this.apiClient.get('characters', null, null , {offset, limit})
+    if (!this.isOnline()) {
+      return this.getCharactersCached(offset, limit)
+    }
+    return this.apiClient.get('characters', null, null , {offset, limit}).then(result => {
+      if (result) {
+        localStorageCache.setItem({type:'characters', offset, limit}, result)
+      }
+      return result;
+    }).catch(error => {
+      if (this.isDisconnectedError(error)) {
+        return this.getCharactersCached(offset, limit)
+      } else {
+        throw error
+      }
+    })
+  }
+  getCharactersCached(offset = 0, limit = 20) {
+    const cachedValue = localStorageCache.getItem({type:'characters', offset, limit})
+    if(cachedValue) {
+      return Promise.resolve(cachedValue)
+    } else {
+      return Promise.reject('NOT_IN_CACHE')
+    }
   }
   getCharacter(id) {
-    return this.apiClient.get('characters', id)
+    if (!this.isOnline()) {
+      return this.getCharacterCached(id)
+    }
+    return this.apiClient.get('characters', id).then(result => {
+      if (result) {
+        localStorageCache.setItem({type:'characters', id}, result)
+      }
+      return result;
+    }).catch(error => {
+      if (this.isDisconnectedError(error)) {
+        return this.getCharacterCached(id)
+      } else {
+        throw error
+      }
+    })
   }
-  isDisconnected(error) {
-    this.offlineMode = false
+  getCharacterCached(id) {
+    const cachedValue = localStorageCache.getItem({type:'characters', id})
+    if(cachedValue) {
+      return Promise.resolve(cachedValue)
+    } else {
+      return Promise.reject('NOT_IN_CACHE')
+    }
+  }
+  isDisconnectedError(error) {
+    this.setStatus('offline')
     return error.message === 'Network Error'
 
   }
@@ -92,18 +165,39 @@ export class MarvelProxyService {
   }
   checkService() {
     return this.apiClient.get('test').then(() => {
-      if (this.offlineMode) {
-        console.log('Service is up')
-        this.offlineMode = false
-      }
+      this.setStatus('online')
     }).catch(()=> {
-      console.log('Service is down')
-      this.offlineMode = true
+      this.setStatus('offline')
+    })
+  }
+  isOnline() {
+    return this.status === 'online'
+  }
+  setStatus(status) {
+    const changed = this.status !== status
+    this.status = status
+    if (changed) {
+      if(this.isOnline()) {
+        console.log('Service is up')
+      } else {
+        console.log('Service is down')
+      }
+      this.notifyStatusListeners()
+    }
+  }
+  addStatusListener(listener) {
+    this.statusListeners.push(listener)
+    listener(this.status)
+  }
+  notifyStatusListeners() {
+    this.statusListeners.forEach(listener => {
+      listener(this.status)
     })
   }
 }
 
-
+const marvelServiceInstance = new MarvelProxyService()
+export const getInstance = () => marvelServiceInstance
 
 class LocalStorageCache {
   constructor() {

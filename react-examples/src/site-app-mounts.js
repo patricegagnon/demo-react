@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import SiteRoot from './components/site-app/StaticSiteRoot'
 import MarvelSiteRoot from './components/site-app/MarvelSiteRoot'
-import createStore from './store/store'
+import createStore from './store/store2'
 import { Provider } from 'react-redux'
 
 

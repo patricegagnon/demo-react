@@ -13,6 +13,7 @@ class MarvelCharacterDetail extends React.Component {
 
   componentDidMount() {
     const id = this.props.match.params.id
+    this.props.actions.setCharacter(null)
     this.props.actions.fetchCharacter(id)
   }
 

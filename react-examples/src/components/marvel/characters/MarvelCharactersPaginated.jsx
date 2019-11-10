@@ -1,5 +1,5 @@
 import React from 'react'
-import MarvelService, {MarvelImageFormats, getImageUrl} from '../../../services/MarvelProxyService'
+import MarvelService, {getInstance, MarvelImageFormats, getImageUrl} from '../../../services/MarvelProxyService'
 import {Link} from "react-router-dom"
 import Pagination from '../../common/Pagination'
 
@@ -14,7 +14,7 @@ class MarvelCharacters extends React.Component {
       total: 0,
       isFetching: false
     }
-    this.marvelService = new MarvelService()
+    this.marvelService = getInstance()
     this.renderCharacterTile = this.renderCharacterTile.bind(this)
     this.fetchPageData = this.fetchPageData.bind(this)
     this.handlePrevious = this.handlePrevious.bind(this)

@@ -1,11 +1,11 @@
 import React from 'react'
-import MarvelService, {MarvelImageFormats, getImageUrl}  from '../../../services/MarvelProxyService'
+import MarvelService, {getInstance, MarvelImageFormats, getImageUrl}  from '../../../services/MarvelProxyService'
 
 class MarvelCharacters extends React.Component {
   constructor(props) {
     super(props)
     this.state = {characters: []}
-    this.marvelService = new MarvelService()
+    this.marvelService = getInstance()
     this.renderCharacterTile = this.renderCharacterTile.bind(this)
   }
   componentDidMount () {

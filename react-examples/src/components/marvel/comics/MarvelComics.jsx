@@ -1,5 +1,5 @@
 import React from "react";
-import MarvelService, {getImageUrl, MarvelImageFormats} from "../../../services/MarvelProxyService";
+import MarvelService, {getInstance, getImageUrl, MarvelImageFormats} from "../../../services/MarvelProxyService";
 import {Link} from "react-router-dom";
 import Pagination from "../../common/Pagination";
 import { connect } from 'react-redux'
@@ -10,7 +10,7 @@ import {bindActionCreators} from 'redux'
 class MarvelComics extends React.Component {
   constructor(props) {
     super(props)
-    this.marvelService = new MarvelService()
+    this.marvelService = getInstance()
     this.renderComicTile = this.renderComicTile.bind(this)
     this.fetchPageData = this.fetchPageData.bind(this)
     this.handlePrevious = this.handlePrevious.bind(this)

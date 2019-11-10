@@ -1,4 +1,4 @@
-import MarvelService from "../../services/MarvelProxyService";
+import MarvelService, {getInstance} from "../../services/MarvelProxyService";
 import {createActions} from '../baseActions'
 /*
 export const Actions = createActions('characters',{
@@ -17,7 +17,7 @@ export const Actions = {
   FETCH_CHARACTER: 'FETCH_CHARACTER'
 }
 
-const marvelService = new MarvelService()
+const marvelService = getInstance()
 
 export const ActionCreators = {
   setFetching: (isFetching) => ({type:Actions.SET_FETCHING, isFetching}),
@@ -30,6 +30,9 @@ export const ActionCreators = {
       dispatch(ActionCreators.setCharacters( response.results, response.offset, response.limit, response.total))
     }).catch(error => {
       console.error('MarvelCharacters error: ' + error)
+      if (error === 'NOT_IN_CACHE') {
+        alert("Vous êtes en mode non connecté et l'information demandée n'est pas disponible")
+      }
     }).finally(() => {
       dispatch(ActionCreators.setFetching(false))
     })
