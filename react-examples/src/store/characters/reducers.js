@@ -9,6 +9,14 @@ export  const characterInitialState = {
   total: 0
 }
 
+export const unavailableCharacters = {
+  name: 'Non disponible',
+  thumbnail: {
+    path: "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
+    extension: "jpg"
+  }
+}
+
 export const charactersReducer = (state = characterInitialState, action = {}) => {
   switch(action.type) {
     case Actions.SET_FETCHING:

@@ -23,7 +23,7 @@ class MarvelComicDetail extends React.Component {
     }
     return <div>
       <h1>{comic.title}</h1>
-      <img src={getImageUrl(comic.thumbnail, MarvelImageFormats.landscape_incredible)}/>
+      {comic.thumbnail && <img src={getImageUrl(comic.thumbnail, MarvelImageFormats.landscape_incredible)}/>}
       {comic.description && <p>{comic.description}</p>}
 
     </div>

@@ -24,7 +24,7 @@ class MarvelCharacterDetail extends React.Component {
     }
     return <div>
       <h1>{character.name}</h1>
-      <img src={getImageUrl(character.thumbnail, MarvelImageFormats.landscape_incredible)}/>
+      {character.thumbnail && <img src={getImageUrl(character.thumbnail, MarvelImageFormats.landscape_incredible)}/>}
       {character.description && <p>{character.description}</p>}
 
     </div>

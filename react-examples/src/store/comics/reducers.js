@@ -9,6 +9,14 @@ export  const comicInitialState = {
   total: 0
 }
 
+export const unavailableComic = {
+  title: 'Non disponible',
+  thumbnail: {
+    path: "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
+    extension: "jpg"
+  }
+}
+
 export const comicsReducer = (state = comicInitialState, action = {}) => {
   switch(action.type) {
     case Actions.SET_FETCHING:
@@ -21,3 +29,4 @@ export const comicsReducer = (state = comicInitialState, action = {}) => {
       return state
   }
 }
+

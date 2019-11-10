@@ -3,6 +3,7 @@ import {
   Actions,
   ActionCreators
 } from './actions'
+import {unavailableComic} from './reducers'
 import MarvelService, {getInstance} from "../../services/MarvelProxyService";
 function * logActionsSaga(action) {
   if (action && action.type) {
@@ -22,7 +23,7 @@ function * mainSaga(action) {
   } catch (error) {
     console.log('Error in mailSaga ' + error)
     if (error === 'NOT_IN_CACHE') {
-      alert("Vous êtes en mode non connecté et l'information demandée n'est pas disponible")
+      yield put(ActionCreators.setComic(unavailableComic))
     }
   } finally {
     yield put(ActionCreators.setFetching(false))
