@@ -2,6 +2,8 @@ import React from 'react';
 import StyledButton from "../common/StyledButton";
 import { reduxForm } from 'redux-form'
 import {NavLink, Route, Switch} from 'react-router-dom';
+import config from '../../config'
+import MapDemo from '../MapDemo'
 import {
   getFormValues,
   isValid
@@ -30,18 +32,55 @@ const Contacts = ({match}) => {
   </div>
 }
 
-const Address = () => {
-  return <div className="p-3">
-    <h2>Adresse</h2>
-    <h4>Québec</h4>
-    725, boulevard Lebourgneuf, bureau 525
-    <br/><br/>
-    Québec (Québec) G2J 0C4
-    <br/><br/>
-    Tél. : 418 650-2866
-  </div>
+const defaultPointOfInterest = {
+  latitude: 46.880600,
+  longitude: -71.242577
+
 }
 
+class Address extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      pointOfInterest: {}
+    }
+  }
+  componentDidMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+
+        const latitude = position.coords.latitude
+        const longitude= position.coords.longitude
+
+        this.setState({pointOfInterest: {
+            latitude, longitude
+          }})
+      },() => {
+        this.setState({pointOfInterest: defaultPointOfInterest})
+      });
+    }
+  }
+  render () {
+
+    return <div className="p-3">
+      <h2>Adresse</h2>
+      <h4>Québec</h4>
+      725, boulevard Lebourgneuf, bureau 525
+      <br/><br/>
+      Québec (Québec) G2J 0C4
+      <br/><br/>
+      Tél. : 418 650-2866
+      <br/>
+      <MapDemo
+        pointOfInterest={this.state.pointOfInterest}
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${config.googleApiKey}`}
+        loadingElement={<div style={{ height: '100%' }} />}
+        containerElement={<div className="mb-4" style={{ height: '400px' }} />}
+        mapElement={<div style={{ height: '100%' }} />}
+      />
+    </div>
+  }
+}
 class ContactForm extends React.PureComponent {
   constructor(props) {
     super(props)
