@@ -1,6 +1,6 @@
 import ApiClient from "./api-client";
 import config from '../config'
-import {keys, map, join} from 'lodash'
+import {keys, map, join, keyBy} from 'lodash'
 
 const baseMarveLUrl = config.marvelProxyServiceBaseUrl //'http://localhost:8090/marvel'
 export const MarvelImageFormats = {
@@ -52,6 +52,8 @@ export class MarvelProxyService {
     this.getCharactersCached = this.getCharactersCached.bind(this)
     this.getComicCached = this.getComicCached.bind(this)
     this.getCharacterCached = this.getCharacterCached.bind(this)
+    this.updateComicsById = this.updateComicsById.bind(this)
+    this.updateCharactersById = this.updateCharactersById.bind(this)
     this.startCheckService()
   }
   getComics(offset = 0, limit = 20) {
@@ -61,6 +63,8 @@ export class MarvelProxyService {
     return this.apiClient.get('comics', null, null , {offset, limit}).then(result => {
       if (result) {
         localStorageCache.setItem({type:'comics', offset, limit}, result)
+        const byId = keyBy(result.results, 'id')
+        this.updateComicsById(byId)
       }
       return result;
     }).catch(error => {
@@ -80,6 +84,17 @@ export class MarvelProxyService {
       return Promise.reject('NOT_IN_CACHE')
     }
   }
+  updateComicsById(comicsById) {
+    let cachedValue = localStorageCache.getItem({type:'comicsById'}) || {}
+    cachedValue = {...cachedValue, ...comicsById}
+    localStorageCache.setItem({type:'comicsById'}, cachedValue)
+  }
+  updateCharactersById(charactersById) {
+    let cachedValue = localStorageCache.getItem({type:'charactersById'}) || {}
+    cachedValue = {...cachedValue, ...charactersById}
+    localStorageCache.setItem({type:'charactersById'}, cachedValue)
+  }
+
   getComic(id) {
     if (!this.isOnline()) {
       return this.getComicCached(id)
@@ -102,6 +117,10 @@ export class MarvelProxyService {
     if(cachedValue) {
       return Promise.resolve(cachedValue)
     } else {
+      const comicsById = localStorageCache.getItem({type:'comicsById'})
+      if (comicsById && comicsById[id]) {
+        return Promise.resolve(comicsById[id])
+      }
       return Promise.reject('NOT_IN_CACHE')
     }
   }
@@ -112,6 +131,8 @@ export class MarvelProxyService {
     return this.apiClient.get('characters', null, null , {offset, limit}).then(result => {
       if (result) {
         localStorageCache.setItem({type:'characters', offset, limit}, result)
+        const byId = keyBy(result.results, 'id')
+        this.updateCharactersById(byId)
       }
       return result;
     }).catch(error => {
@@ -152,6 +173,10 @@ export class MarvelProxyService {
     if(cachedValue) {
       return Promise.resolve(cachedValue)
     } else {
+      const charactersById = localStorageCache.getItem({type:'charactersById'})
+      if (charactersById && charactersById[id]) {
+        return Promise.resolve(charactersById[id])
+      }
       return Promise.reject('NOT_IN_CACHE')
     }
   }
