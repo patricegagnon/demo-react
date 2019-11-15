@@ -54,6 +54,7 @@ module.exports = function(env) {
         filename: "./index.html"
       }),
       new CopyWebpackPlugin([ { from: 'src/public', to: './public'}]),
+      new CopyWebpackPlugin([ { from: 'src/caching', to: './caching'}]),
       new webpack.DefinePlugin({
         'envConfig.marvelProxyServiceBaseUrl': '"' + appConfig.marvelProxyServiceBaseUrl + '"'
       }),

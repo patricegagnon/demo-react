@@ -24,8 +24,13 @@ export const MarvelImageFormats = {
   landscape_incredible: 'landscape_incredible'
 }
 
+const serverClient = new ApiClient({baseURL: 'http://localhost:8085'})
 export const getImageUrl = (imageInfo, format) => {
-  return `${imageInfo.path}/${format}.${imageInfo.extension}`
+  //return `${imageInfo.path}/${format}.${imageInfo.extension}`
+  const url = `${imageInfo.path}/${format}.${imageInfo.extension}`
+  const manifestUrl = 'http://localhost:8085/image-manifest?url=' + encodeURIComponent(url)
+  serverClient.get(manifestUrl).catch(()=>{})
+  return url
 }
 
 export class MarvelProxyService {

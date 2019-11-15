@@ -10,3 +10,5 @@ http://localhost:8085/public/images/logo.svg
 ${genEntries}
 NETWORK:
 *
+FALLBACK:
+http://i.annihil.us/ http://localhost:8085/public/images/landscape_large.jpg
