@@ -59,6 +59,9 @@ export class MarvelProxyService {
     this.getCharacterCached = this.getCharacterCached.bind(this)
     this.updateComicsById = this.updateComicsById.bind(this)
     this.updateCharactersById = this.updateCharactersById.bind(this)
+    this.startSendPendingForms = this.startSendPendingForms.bind(this)
+    this.sendPendingForms = this.sendPendingForms.bind(this)
+    this.startSendPendingForms()
     this.startCheckService()
   }
   getComics(offset = 0, limit = 20) {
@@ -185,6 +188,18 @@ export class MarvelProxyService {
       return Promise.reject('NOT_IN_CACHE')
     }
   }
+  sendForm(form) {
+    return this.apiClient.post('form', form)
+      .then(result => {
+        alert("Formulaire envoyé")
+      }).catch(error => {
+        if (this.isDisconnectedError(error)) {
+          this.storeFormToSend(form)
+        } else {
+          throw error
+        }
+      })
+  }
   isDisconnectedError(error) {
     this.setStatus('offline')
     return error.message === 'Network Error'
@@ -214,6 +229,28 @@ export class MarvelProxyService {
         console.log('Service is down')
       }
       this.notifyStatusListeners()
+    }
+  }
+  storeFormToSend(form) {
+    let forms = localStorageCache.getItem({type:'forms'})
+    if (!forms) {
+      forms = []
+    }
+    forms.push(form)
+    localStorageCache.setItem({type: 'forms'}, forms)
+  }
+  startSendPendingForms() {
+    setInterval(this.sendPendingForms, 5000)
+  }
+  sendPendingForms() {
+    if (this.isOnline()) {
+      const forms = localStorageCache.getItem({type: 'forms'})
+      localStorageCache.setItem({type: 'forms'}, [])
+      if (forms) {
+        forms.forEach(form => {
+          this.sendForm(form)
+        })
+      }
     }
   }
   addStatusListener(listener) {

@@ -1,4 +1,6 @@
 import express from 'express'
+
+import bodyParser from 'body-parser'
 import {cleanCharactersResultData, cleanComisResultData, MarvelService} from './service/marvel-service'
 
 const port = 8090
@@ -7,8 +9,12 @@ const app = express()
 const marvelSvc = new MarvelService()
 
 const cache = {}
-
-
+app.use(bodyParser.json())
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next()
+})
 app.get('/marvel/comics', function (req, res) {
   res.set('Access-Control-Allow-Origin', '*')
   const cacheKey = req.originalUrl
@@ -83,6 +89,13 @@ app.get('/marvel/characters/:id', function (req, res) {
 app.get('/marvel/test', function (req, res) {
   res.set('Access-Control-Allow-Origin', '*')
   res.json({status: 'online'})
+})
+
+app.post('/marvel/form', function (req, res) {
+
+  res.set('Access-Control-Allow-Origin', '*')
+ console.log('formSubmitted : ' + JSON.stringify(req.body))
+  res.json({status: 'received'})
 })
 
 console.log('listening on port ' + port)

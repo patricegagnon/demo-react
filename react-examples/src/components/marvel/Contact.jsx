@@ -4,16 +4,19 @@ import { reduxForm } from 'redux-form'
 import {NavLink, Route, Switch} from 'react-router-dom';
 import config from '../../config'
 import MapDemo from '../MapDemo'
+
 import {
   getFormValues,
   isValid
 } from 'redux-form'
 import { connect } from 'react-redux'
 import { Field } from 'redux-form'
+import {getInstance} from "../../services/MarvelProxyService";
 
 const getContactFormValues = getFormValues('contact')
 const isContactFormValid = isValid('contact')
 
+const marvelService = getInstance()
 const Contacts = ({match}) => {
   return <div>
     <h2>Contactez-nous</h2>
@@ -88,7 +91,9 @@ class ContactForm extends React.PureComponent {
   }
   handleSubmit () {
     if (this.props.isValid)
+
       alert("Envois du formulaire")
+      marvelService.sendForm(this.props.formValues)
   }
   render () {
     const {pristine, submitting, isValid, dirty } = this.props
@@ -105,6 +110,7 @@ class ContactForm extends React.PureComponent {
     </div>
   }
 }
+
 
 const renderTextField = (field) => (
   <div>
@@ -147,6 +153,11 @@ const mapStateToProps = (state) => {
     isValid: isContactFormValid(state)
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+
+}
+
 const ContactFormReduxConnected = connect(mapStateToProps, null)(ContactFormRedux)
 
 export default Contacts
