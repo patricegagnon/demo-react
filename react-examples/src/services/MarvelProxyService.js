@@ -191,7 +191,8 @@ export class MarvelProxyService {
   checkService() {
     return this.apiClient.get('test').then(() => {
       this.setStatus('online')
-    }).catch(()=> {
+    }).catch((error)=> {
+      console.log("Erreur Marvel service test " + error)
       this.setStatus('offline')
     })
   }

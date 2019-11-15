@@ -25,7 +25,14 @@ module.exports = function(env) {
       contentBase: path.join(__dirname, 'dist'),
       inline: true,
       port: 8085,
-      historyApiFallback:true
+      historyApiFallback:true,
+      clientLogLevel: 'debug',
+      before: function(app, server, compiler) {
+        app.get('*', function(req, res, next) {
+          console.log("serving " + req.url)
+          next()
+        });
+      }
     },
     module: {
       rules: [

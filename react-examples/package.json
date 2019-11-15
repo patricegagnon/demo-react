@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config ./webpack.config.js --mode development --env.app=app --env.server=local",
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development --watch  --env.app=app --env.server=local"
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development --watch  --env.app=app --env.server=local",
+    "build-server": "babel src/server.js --source-maps --out-file dist/server.js",
+    "start-server": "nodemon dist/server.js"
   },
   "author": "",
   "license": "ISC",
