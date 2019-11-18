@@ -92,10 +92,30 @@ app.get('/marvel/test', function (req, res) {
 })
 
 app.post('/marvel/form', function (req, res) {
-
   res.set('Access-Control-Allow-Origin', '*')
  console.log('formSubmitted : ' + JSON.stringify(req.body))
   res.json({status: 'received'})
+})
+
+const todosDB = {
+  todos: []
+}
+
+app.get('/marvel/todos', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  res.json(todosDB.todos)
+})
+
+app.post('/marvel/todos', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  todosDB.todos = req.body
+  res.status(200).send()
+})
+
+app.put('/marvel/todos', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  todosDB.todos.push(req.body.todo)
+  res.status(200).send()
 })
 
 console.log('listening on port ' + port)

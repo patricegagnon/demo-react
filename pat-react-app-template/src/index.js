@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import TodoList from './components/TodoList'
 
-console.log('All begin here')
-document.write('<h1>All begin here!</h1>')
+
+//document.getElementById("root").innerHTML += '<p>Ajout de contenu en JS</p>'
+
+

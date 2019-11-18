@@ -1,0 +1,14 @@
+html, body {
+    height: 100%;
+}
+body>div {
+    height: 100%;
+    padding : 3px;
+    border :5px solid gray;
+    display:block;
+}
+
+div#root {
+    padding : 3px;
+    background:white;
+}
