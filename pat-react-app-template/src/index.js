@@ -6,3 +6,8 @@ import TodoList from './components/TodoList'
 //document.getElementById("root").innerHTML += '<p>Ajout de contenu en JS</p>'
 
 
+
+ReactDOM.render(<TodoList />,document.getElementById("root"))
+
+
+

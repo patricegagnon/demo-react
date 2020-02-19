@@ -23,7 +23,7 @@ class TodoList extends React.Component {
   }
   render () {
     return <div style={{width: '300px'}}>
-      <Title>À faire</Title>
+      <Title background={"bg-white"}>À faire</Title>
       <ul>
         {this.state.todos.map(todo => <li>{todo}</li>)}
       </ul>
