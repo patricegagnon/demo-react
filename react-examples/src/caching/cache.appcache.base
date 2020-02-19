@@ -1,0 +1,14 @@
+CACHE MANIFEST
+CACHE:
+http://localhost:8085/app.js
+http://localhost:8085/public/css/styles.css
+http://localhost:8085/public/css/icomoon.css
+http://localhost:8085/public/css/bootstrap.css
+http://localhost:8085/public/images/home.jpg
+http://localhost:8085/public/images/header.jpg
+http://localhost:8085/public/images/logo.svg
+${genEntries}
+NETWORK:
+*
+FALLBACK:
+http://i.annihil.us/ http://localhost:8085/public/images/landscape_large.jpg

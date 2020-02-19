@@ -1,5 +1,7 @@
 import express from 'express'
-import {MarvelService} from './service/marvel-service'
+
+import bodyParser from 'body-parser'
+import {cleanCharactersResultData, cleanComisResultData, MarvelService} from './service/marvel-service'
 
 const port = 8090
 const app = express()
@@ -7,8 +9,12 @@ const app = express()
 const marvelSvc = new MarvelService()
 
 const cache = {}
-
-
+app.use(bodyParser.json())
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next()
+})
 app.get('/marvel/comics', function (req, res) {
   res.set('Access-Control-Allow-Origin', '*')
   const cacheKey = req.originalUrl
@@ -18,8 +24,9 @@ app.get('/marvel/comics', function (req, res) {
     res.json(cache[cacheKey])
   } else {
     marvelSvc.getComics(offset, limit).then(result => {
-      cache[cacheKey] = result.data
-      res.json(result.data)
+      const data = cleanComisResultData(result.data)
+      cache[cacheKey] = data
+      res.json(data)
     }).catch(error => {
       res.status(error.response.status).json(error.response.data)
     })
@@ -52,8 +59,9 @@ app.get('/marvel/characters', function (req, res) {
     res.json(cache[cacheKey])
   } else {
     marvelSvc.getCharacters(offset, limit).then(result => {
-      cache[cacheKey] = result.data
-      res.json(result.data)
+      const data = cleanCharactersResultData(result.data)
+      cache[cacheKey] = data
+      res.json(data)
     }).catch(error => {
       res.status(error.response.status).json(error.response.data)
     })
@@ -76,6 +84,38 @@ app.get('/marvel/characters/:id', function (req, res) {
       res.status(error.response.status).json(error.response.data)
     })
   }
+})
+
+app.get('/marvel/test', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  res.json({status: 'online'})
+})
+
+app.post('/marvel/form', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+ console.log('formSubmitted : ' + JSON.stringify(req.body))
+  res.json({status: 'received'})
+})
+
+const todosDB = {
+  todos: []
+}
+
+app.get('/marvel/todos', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  res.json(todosDB.todos)
+})
+
+app.post('/marvel/todos', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  todosDB.todos = req.body
+  res.status(200).send()
+})
+
+app.put('/marvel/todos', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*')
+  todosDB.todos.push(req.body.todo)
+  res.status(200).send()
 })
 
 console.log('listening on port ' + port)

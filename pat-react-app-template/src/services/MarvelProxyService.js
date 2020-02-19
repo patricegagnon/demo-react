@@ -38,6 +38,8 @@ export class MarvelProxyService {
     this.getComic = this.getComic.bind(this)
     this.getCharacters = this.getCharacters.bind(this)
     this.getCharacter = this.getCharacter.bind(this)
+    this.getTodos = this.getTodos.bind(this)
+    this.updateTodos = this.updateTodos.bind(this)
   }
 
   getComics(offset = 0, limit = 20) {
@@ -51,6 +53,12 @@ export class MarvelProxyService {
   }
   getCharacter(id) {
     return this.apiClient.get('characters', id)
+  }
+  getTodos() {
+    return this.apiClient.get('todos')
+  }
+  updateTodos(todos) {
+    return this.apiClient.post('todos', todos)
   }
 }
 

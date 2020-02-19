@@ -1,5 +1,5 @@
 {
-  "name": "marvel-api-test",
+  "name": "marvel-api-server",
   "version": "1.0.0",
   "description": "",
   "main": "src/test.js",
@@ -8,7 +8,7 @@
     "build": "babel src --out-dir dist --source-maps",
     "buildw": "babel --watch src --out-dir dist --source-maps",
     "start-test": "node dist/index.js",
-    "start-server": "nodemon dist/server.js"
+    "start": "nodemon dist/server.js"
   },
   "author": "",
   "license": "ISC",
