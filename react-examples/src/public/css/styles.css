@@ -1,0 +1,96 @@
+.header {
+    background-image: url("/public/images/header.jpg");
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    height : 250px;
+}
+body{
+    font-family: Arial;
+}
+.navbar-custom {
+    margin-top:80px;
+    background-color: #eeeeee;
+    opacity: 0.9;
+    color:black;
+}
+
+.form label {
+    display:block;
+    width:100%;
+    font-weight:bold;
+}
+
+.form input {
+    width:400px;
+    margin-bottom:15px
+}
+
+.form textarea {
+    width:400px;
+    height:200px;
+}
+
+#manager-context-menu {
+    position:absolute;
+}
+#manager-context-menu, #manager-context-menu div{
+    display:flex;
+    flex-direction:column;
+    right:0;
+    top:0;
+}
+
+#manager-context-menu .appManagerButtonsHidden{
+    display:none;
+}
+
+#manager-context-menu .toggleMenuBtn {
+    width:50px;
+    align-self: flex-end;
+}
+
+.simple-app-manager .appManagerButtonsHidden {
+    display:flex;
+    flex-direction:column;
+    width:30%;
+}
+.zeldaItemSelector{
+    width:800px;
+    height:800px;
+    display:flex;
+    background-image: url("/public/images/zelda/zelda-items.png");
+    background-repeat: no-repeat; /* Do not repeat the image */
+
+}
+.zeldaItems {
+    padding-left:45px;
+    padding-top:15px;
+
+    width:380px;
+    height:300px;
+    display:flex;
+    flex-wrap:wrap;
+}
+.zeldaItem {
+    width:60px;
+    height:60px;
+}
+
+.zeldaSelectedItem {
+    margin-left:88px;
+    margin-top:30px;
+}
+
+.offline-message {
+    display:none;
+    position:absolute;
+    background: red;
+    color: white;
+    top: 0;
+    right: 0;
+    padding : 2px;
+}
+
+.offline-message.offline {
+    display:block;
+}
