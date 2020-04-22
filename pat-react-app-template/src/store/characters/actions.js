@@ -1,10 +1,12 @@
 import MarvelService from "../../services/MarvelProxyService";
+import {createActions} from '../store-utils'
 
-export const Actions = {
+export const Actions = createActions('characters',{
   SET_FETCHING: 'SET_FETCHING',
   SET_CHARACTERS: 'SET_CHARACTERS',
-  SET_CHARACTER: 'SET_CHARACTER',
-}
+  SET_CHARACTER: 'SET_CHARACTER'
+})
+
 
 const marvelService = new MarvelService()
 

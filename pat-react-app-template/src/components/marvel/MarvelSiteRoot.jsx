@@ -3,6 +3,8 @@ import React from 'react';
 import {NavLink, Route, Switch} from 'react-router-dom';
 import MarvelCharacters from "../marvel/characters/MarvelCharactersPaginated";
 import MarvelCharacterDetail from '../marvel/characters/MarvelCharacterDetail'
+import MarvelComics from './comics/MarvelComics'
+import MarvelComicDetail from "./comics/MarvelComicDetail";
 import Contact from '../marvel/Contact'
 
 import { withRouter } from 'react-router-dom'
@@ -49,6 +51,7 @@ class MarvelSiteRoot extends React.PureComponent {
             <div className="navbar-nav">
               <NavLink exact className="nav-item nav-link" activeClassName="active" to="/">Accueil</NavLink>
               <NavLink className="nav-item nav-link" activeClassName="active" to="/characters">Personnages</NavLink>
+              <NavLink className="nav-item nav-link" activeClassName="active" to="/comics">Bandes dessinées</NavLink>
               <NavLink className="nav-item nav-link" activeClassName="active" to="/about">À propos</NavLink>
               <a className="nav-item nav-link" href="#" onClick={this.linkToContactUs}>Contactez-nous</a>
             </div>
@@ -61,6 +64,8 @@ class MarvelSiteRoot extends React.PureComponent {
           <Route path="/about" component={About}/>
           <Route exact path="/characters" render={(props) => <MarvelCharacters {...props} showDetailLink />}/>
           <Route exact path="/characters/:id" component={MarvelCharacterDetail}/>
+          <Route exact path="/comics" render={(props) => <MarvelComics {...props} showDetailLink />}/>
+          <Route path="/comics/:id" component={MarvelComicDetail}/>
           <Route path="/contact" component={Contact}/>
         </Switch>
       </div>

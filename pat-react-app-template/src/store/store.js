@@ -1,5 +1,7 @@
 import {createStore, applyMiddleware, compose} from 'redux'
-import {charactersReducer, characterInitialState} from './characters/reducers'
+import {charactersReducer, } from './characters/reducers'
+import {comicsReducer } from './comics/reducers'
+import { combineReducers } from 'redux'
 
 import thunk from 'redux-thunk';
 
@@ -13,7 +15,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default () => {
-  const store = createStore(charactersReducer, characterInitialState, compose(
+  const reducers = combineReducers(
+    {
+      comics: comicsReducer,
+      characters: charactersReducer
+    }
+  )
+  const store = createStore(reducers, {}, compose(
     applyMiddleware(thunk),
     devToolsExtension
   ))
