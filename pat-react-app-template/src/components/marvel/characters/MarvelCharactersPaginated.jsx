@@ -25,7 +25,7 @@ class MarvelCharacters extends React.Component {
   }
 
   fetchPageData(offset, limit) {
-    this.props.actions.fetchPageDataWithThunk(offset, limit)
+    this.props.actions.fetchPageData(offset, limit)
   }
 
   renderCharacterTile(character) {
