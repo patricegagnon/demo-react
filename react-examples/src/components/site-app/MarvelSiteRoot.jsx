@@ -5,7 +5,6 @@ import MarvelCharacters from "../marvel/characters/redux/MarvelCharactersPaginat
 import MarvelCharacterDetail from '../marvel/characters/redux/MarvelCharacterDetail'
 import MarvelComics from "../marvel/comics/MarvelComics";
 import MarvelComicDetail from '../marvel/comics/MarvelComicDetail'
-import MarvelOfflineMessage from '../marvel/MarvelOffineMessage'
 
 import { withRouter } from 'react-router-dom'
 import Contact from '../marvel/Contact'
@@ -53,7 +52,6 @@ class MarvelSiteRoot extends React.PureComponent {
     return <div>
       <div className="header">
         <h1><img style={{height: '100px'}} src="/public/images/logo.svg" /></h1>
-       <MarvelOfflineMessage />
         <nav className="navbar navbar-expand-lg  navbar-light navbar-custom">
             <div className="navbar-nav">
               <NavLink exact className="nav-item nav-link" activeClassName="active" to="/">Accueil</NavLink>
