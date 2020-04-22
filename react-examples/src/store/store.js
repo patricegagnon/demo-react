@@ -3,9 +3,11 @@ import createSagaMiddleware from 'redux-saga'
 import thunk from 'redux-thunk';
 import comisSagas from './comics/saga'
 import charactersSagas from './characters/saga'
-import {comicsReducer, comicInitialState} from './comics/reducers'
-import {charactersReducer, characterInitialState} from './characters/reducers'
-
+import {comicsReducer} from './comics/reducers'
+import {appReducer} from './app/reducers'
+import {charactersReducer} from './characters/reducers'
+import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
 const sagaMiddleware = createSagaMiddleware()
 let devToolsExtension = f => f
 
@@ -16,15 +18,28 @@ if (process.env.NODE_ENV !== 'production') {
     }) : (f) => f
 }
 
-export default (initialState = comicInitialState) => {
-  const store = createStore(comicsReducer, initialState, compose(
-  applyMiddleware(thunk),
-  applyMiddleware(sagaMiddleware),
+function * rootCombinesSagas () {
+  yield * comisSagas()
+  yield * charactersSagas()
+}
+
+export default (initialState = {}) => {
+  const reducers = combineReducers(
+    {
+      app: appReducer,
+      comics: comicsReducer,
+      characters: charactersReducer,
+      form: formReducer
+    }
+  )
+  const store = createStore(reducers, initialState, compose(
+    applyMiddleware(thunk),
+    applyMiddleware(sagaMiddleware),
     devToolsExtension
   ))
 
+
   store.runSaga = sagaMiddleware.run
-  store.runSaga(comisSagas)
-  //store.runSaga(charactersSagas)
+  store.runSaga(rootCombinesSagas)
   return store
 }
