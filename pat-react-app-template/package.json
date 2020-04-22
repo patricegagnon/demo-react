@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config ./webpack.config.js --mode development",
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development --watch",
-    "build-and-watch": "webpack --config ./webpack.config.js --mode development  --watch",
+    "build": "webpack --config ./webpack.config.js --mode development --env.server=local",
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development --watch --env.server=local",
+    "build-and-watch": "webpack --config ./webpack.config.js --mode development  --watch --env.server=local",
     "build-server": "babel src/server.js --out-file dist/server.js",
     "start-server": "node dist/server.js"
   },

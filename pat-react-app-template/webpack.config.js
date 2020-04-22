@@ -1,9 +1,15 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebPackPlugin = require("html-webpack-plugin")
+const webpack = require('webpack')
 
 const path = require('path');
 module.exports = function(env) {
   const entryPath = path.join(__dirname,'src','index.js')
+
+  const server = env.server || 'local'
+  console.log('building env ' + server)
+  const configFilename = path.join(__dirname, `./build.${server}.js`)
+  const appConfig = require(configFilename)
   return {
     entry: {
         main: ['@babel/polyfill', entryPath]
@@ -39,7 +45,10 @@ module.exports = function(env) {
         template: "./src/index.html",
         filename: "./index.html"
       }),
-      new CopyWebpackPlugin([ { from: 'src/public', to: './public'}])
+      new CopyWebpackPlugin([ { from: 'src/public', to: './public'}]),
+      new webpack.DefinePlugin({
+        'envConfig.marvelProxyServiceBaseUrl': '"' + appConfig.marvelProxyServiceBaseUrl + '"'
+      })
     ],
     devtool: "source-map"
   };
