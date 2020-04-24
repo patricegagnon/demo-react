@@ -2,7 +2,10 @@ import React from 'react'
 
 import {NavLink, Route, Switch} from 'react-router-dom'
 import MarvelCharacters from './characters/MarvelCharacters'
+import MarvelCharactersNoPagination from './characters/MarvelCharactersNoPaginationNoRedux'
+import MarvelCharactersPaginatedNoRedux from './characters/MarvelCharactersPaginatedNoRedux'
 import MarvelCharacterDetail from './characters/MarvelCharacterDetail'
+import MarvelCharacterDetailNoRedux from './characters/MarvelCharacterDetailNoRedux'
 import MarvelComics from './comics/MarvelComics'
 import MarvelComicDetail from './comics/MarvelComicDetail'
 
