@@ -13,7 +13,7 @@ module.exports = function(env) {
   const entryPath = path.join(__dirname,'src',appName + '.js')
   return {
     entry: {
-        main: ['@babel/polyfill', entryPath]
+        main: entryPath
     },
     output: {
         path: path.join(__dirname,'dist'),
