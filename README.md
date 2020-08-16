@@ -1,6 +1,6 @@
 # demo-react
 
-Voici 3 projets concû pour présenter un tutoriel React / redux.
+Voici 3 projets conçu pour présenter un tutoriel React / redux.
 
 ## marvel-api-server
 
